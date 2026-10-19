@@ -5,6 +5,30 @@ export const metadata: Metadata = {
   description: "Mammoth vector marks and the website color palette.",
   alternates: { canonical: "/brand/" },
 };
+const colors = [
+  {
+    name: "Mammoth Navy",
+    role: "The signature",
+    hex: "#1C2241",
+    rgb: "28, 34, 65",
+    description: "Our mark, wordmarks and headings on light backgrounds.",
+  },
+  {
+    name: "Warm Cream",
+    role: "The foundation",
+    hex: "#FAF6EE",
+    rgb: "250, 246, 238",
+    description:
+      "Light backgrounds and a backing for the mark on dark surfaces.",
+  },
+  {
+    name: "Soft Gold",
+    role: "The accent",
+    hex: "#E8D2A9",
+    rgb: "232, 210, 169",
+    description: "Tusk and gear highlights, accents and illustration details.",
+  },
+];
 export default function Brand() {
   return (
     <main id="main" className="container brand-page">
@@ -18,9 +42,52 @@ export default function Brand() {
         The Mammoth identity pairs a faceted mammoth with a tusk shaped into a
         gear.
         <br />
-        Deep navy, warm cream and soft gold come from the supplied brand
-        reference.
+        Deep navy, warm cream and soft gold give Mammoth its distinctive
+        character.
       </p>
+      <section className="brand-colors" aria-labelledby="brand-colors-title">
+        <span className="eyebrow">THE COLOR PALETTE</span>
+        <h2 id="brand-colors-title">Our colors.</h2>
+        <p>
+          A grounded palette with a little warmth. Use these values wherever
+          Mammoth makes an appearance.
+        </p>
+        <ul className="brand-palette">
+          {colors.map((color) => (
+            <li key={color.hex}>
+              <div
+                className="brand-swatch"
+                style={{ backgroundColor: color.hex }}
+                aria-hidden="true"
+              />
+              <div className="brand-color-details">
+                <span className="brand-color-role">{color.role}</span>
+                <h3>{color.name}</h3>
+                <dl>
+                  <div>
+                    <dt>HEX</dt>
+                    <dd>
+                      <code>{color.hex}</code>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>RGB</dt>
+                    <dd>
+                      <code>{color.rgb}</code>
+                    </dd>
+                  </div>
+                </dl>
+                <p>{color.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p className="brand-color-guidance">
+          Keep the brand colors consistent in both themes. Use navy text on
+          cream or gold. For gold-toned text on cream, use the darker ink shade
+          <code> #806130</code> to keep it readable.
+        </p>
+      </section>
       <div className="brand-assets">
         <div className="brand-asset">
           <Logo />
@@ -65,8 +132,6 @@ export default function Brand() {
         </p>
       </div>
       <p>
-        Navy #1C2241 · Cream #FAF6EE · Gold #E8D2A9.
-        <br />
         Typography: Space Grotesk for display, Manrope for body. Font license
         files ship with their packages.
       </p>

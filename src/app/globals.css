@@ -1455,6 +1455,78 @@ th {
   font-size: 70px;
   margin-bottom: 25px;
 }
+.brand-colors {
+  margin-block: 64px;
+}
+.brand-colors h2 {
+  font-size: clamp(32px, 4vw, 44px);
+  margin-block: 8px 14px;
+}
+.brand-colors > p {
+  color: var(--muted);
+  max-width: 640px;
+}
+.brand-palette {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  list-style: none;
+  padding: 0;
+  margin-block: 28px 22px;
+}
+.brand-palette > li {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.brand-swatch {
+  height: 140px;
+  border-bottom: 1px solid var(--line);
+}
+.brand-color-details {
+  padding: 22px;
+}
+.brand-color-role {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.brand-color-details h3 {
+  margin-block: 4px 18px;
+  font-size: 20px;
+}
+.brand-color-details dl {
+  margin: 0;
+  font-size: 12px;
+}
+.brand-color-details dl > div {
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr);
+  gap: 8px;
+  margin-block: 5px;
+}
+.brand-color-details dt {
+  color: var(--muted);
+  font-size: 10px;
+}
+.brand-color-details dd {
+  margin: 0;
+}
+.brand-color-details code,
+.brand-color-guidance code {
+  font-family: var(--mono);
+  color: var(--text);
+}
+.brand-color-details p {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.brand-colors .brand-color-guidance {
+  font-size: 12px;
+}
 .brand-assets {
   display: flex;
   flex-wrap: wrap;
@@ -1499,6 +1571,12 @@ th {
   font-size: 13px;
 }
 @media (max-width: 600px) {
+  .brand-palette {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .brand-swatch {
+    height: 120px;
+  }
   .brand-reference {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
