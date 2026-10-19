@@ -2,23 +2,26 @@
 
 :root {
   color-scheme: light dark;
-  --bg: light-dark(#faf9f6, #131218);
-  --surface: light-dark(#fffefa, #1c1a23);
-  --surface-subtle: light-dark(#f1efea, #211e29);
-  --text: light-dark(#252329, #f1eff4);
-  --muted: light-dark(#65616d, #a6a1b0);
-  --line: light-dark(#dfdce4, #35313e);
-  --accent: light-dark(#0369a1, #7dd3fc);
-  --accent-soft: light-dark(#e0f2fe, #17334b);
+  --bg: light-dark(#faf6ee, #111426);
+  --surface: light-dark(#fffcf5, #1a1e34);
+  --surface-subtle: light-dark(#f0e9dc, #22273f);
+  --text: light-dark(#191c32, #f6f0e4);
+  --muted: light-dark(#65605a, #b5b2b9);
+  --line: light-dark(#ded4c2, #373b50);
+  --accent: light-dark(#333957, #e7d2a4);
+  --accent-soft: light-dark(#eee4d1, #2d2f42);
+  --brand-paper: #faf6ee;
+  --brand-gold: #e8d2a9;
+  --brand-gold-ink: light-dark(#806130, #e7d2a4);
   --mint: light-dark(#458f75, #89c7aa);
-  --particle-rgb: 36, 126, 169;
-  --art-side: light-dark(#0369a1, #173b55);
-  --art-middle: light-dark(#38a5d4, #397a9c);
-  --art-top: light-dark(#c2eafb, #8bbdd2);
-  --art-stroke: light-dark(#1683b6, #7db5d3);
-  --art-highlight: light-dark(#d4effc, #c4e7f6);
-  --art-line: light-dark(#9ccce2, #3c647e);
-  --art-shadow: light-dark(#e4edf0, #182430);
+  --particle-rgb: 71, 76, 111;
+  --art-side: light-dark(#20243f, #171b34);
+  --art-middle: light-dark(#555c80, #434a6c);
+  --art-top: light-dark(#e8d2a9, #e8d2a9);
+  --art-stroke: light-dark(#3e4565, #a9a5a0);
+  --art-highlight: light-dark(#f5e7c5, #f5e7c5);
+  --art-line: light-dark(#a39a8b, #8f846e);
+  --art-shadow: light-dark(#e9e0cd, #1a1d31);
   --oxog-purple: light-dark(#692d91, #b477e4);
   --display: "Space Grotesk Variable", sans-serif;
   --body: "Manrope Variable", sans-serif;
@@ -32,11 +35,11 @@
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --particle-rgb: 125, 211, 252;
+  --particle-rgb: 232, 210, 169;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --particle-rgb: 125, 211, 252;
+    --particle-rgb: 232, 210, 169;
   }
 }
 * {
@@ -225,11 +228,24 @@ figure {
   font: 600 27px / 1 var(--display);
   letter-spacing: -0.055em;
 }
-.brand > svg {
-  color: var(--accent);
+.brand-mark {
+  display: block;
+  flex: 0 0 auto;
+  width: 50px;
+  height: 42px;
+  padding: 3px;
+  border-radius: 6px;
+  background: var(--brand-paper);
 }
-.brand-dot {
-  color: var(--accent);
+.brand-wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.brand-wordmark small {
+  font: 8px / 1 var(--mono);
+  letter-spacing: 0.32em;
+  color: var(--brand-gold-ink);
 }
 .desktop-nav {
   display: flex;
@@ -370,15 +386,15 @@ figure {
   border: 1px solid var(--line);
   border-radius: 6px;
   margin-bottom: 5px;
-  background: #f1efea;
+  background: #f0e9dc;
   color: #55515c;
 }
 .preview-dark {
-  background: #24202d;
-  color: #d9d1e3;
+  background: #20253c;
+  color: #e9d9b9;
 }
 .preview-system {
-  background: linear-gradient(90deg, #f1efea 50%, #24202d 50%);
+  background: linear-gradient(90deg, #f0e9dc 50%, #20253c 50%);
 }
 .preview-window {
   display: grid;
@@ -392,12 +408,12 @@ figure {
 }
 .preview-window i {
   grid-row: span 3;
-  background: #9989aa66;
+  background: #575d7d66;
 }
 .preview-window b {
   height: 3px;
   width: 100%;
-  background: #9989aa66;
+  background: #575d7d66;
 }
 .choice-check {
   position: absolute;
@@ -462,7 +478,7 @@ h1 {
   letter-spacing: -0.065em;
 }
 h1 > span {
-  color: var(--accent);
+  color: var(--brand-gold-ink);
 }
 .hero-description {
   color: var(--text);
@@ -1132,7 +1148,7 @@ pre {
   letter-spacing: -0.06em;
 }
 .closing h2 > span {
-  color: var(--accent);
+  color: var(--brand-gold-ink);
 }
 .closing .hero-actions {
   justify-content: center;
@@ -1402,6 +1418,36 @@ th {
   color: var(--accent);
   margin-top: 25px;
   font-size: 12px;
+}
+.brand-reference {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 36px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-block: 35px;
+}
+.brand-reference .brand-mark {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  padding: 14px;
+}
+.brand-reference h2 {
+  font-size: 32px;
+  margin-bottom: 18px;
+}
+.brand-reference p {
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .brand-reference {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 22px;
+  }
 }
 .not-found {
   text-align: center;
@@ -1864,9 +1910,9 @@ th {
     font-size: 23px;
     gap: 5px;
   }
-  .brand svg {
-    width: 29px;
-    height: 29px;
+  .brand-mark {
+    width: 44px;
+    height: 39px;
   }
   .theme-trigger {
     gap: 4px;

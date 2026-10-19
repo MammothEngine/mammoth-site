@@ -10,6 +10,7 @@ const types = {
   ".svg": "image/svg+xml",
   ".woff2": "font/woff2",
   ".png": "image/png",
+  ".jpeg": "image/jpeg",
   ".ico": "image/x-icon",
   ".xml": "application/xml",
   ".txt": "text/plain",

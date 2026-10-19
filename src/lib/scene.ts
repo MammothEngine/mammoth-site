@@ -25,7 +25,7 @@ export function startScene(
     frame = 0,
     previous = 0,
     time = 0;
-  let color = "126, 74, 211";
+  let color = "71, 76, 111";
   let particles: Particle[] = [];
   let trails: Point[] = [],
     ripples: Point[] = [],
@@ -65,7 +65,7 @@ export function startScene(
     color =
       getComputedStyle(document.documentElement)
         .getPropertyValue("--particle-rgb")
-        .trim() || "126,74,211";
+        .trim() || "71,76,111";
   }
   function clearEffects() {
     pointer.active = false;

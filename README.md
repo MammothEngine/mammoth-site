@@ -51,7 +51,7 @@ Disabling motion clears both canvases and drops the scene's RAF, pointer, blur, 
 
 Guides link to the inspected upstream snapshot (`6b186803b0a17b4ef03914dc6cbd3602d6ede66c`). See [the research notes](docs/research.md) for evidence and conflicting upstream claims. This site does not claim stable production readiness or reproduce benchmarks without measurement context. Database examples are illustrative, not executed in the visitor’s browser.
 
-The site mark carries forward the upstream site's database symbol with its original geometry. SVG sources, favicon, Apple icon and PNG/SVG social cards are in `public/`. To regenerate raster exports from the editable vector sources, run `node scripts/assets.mjs` (Sharp is supplied by Next.js). The Oxog geometry and color/motion references come from the existing CobaltDB site.
+The supplied Mammoth artwork is the authoritative brand reference: a faceted navy mammoth and a cream/gold tusk forming a gear. `public/mammoth-mark.svg` is a transparent vector trace; `public/mammoth-original.jpeg` preserves the original user-supplied image. The mark stays navy and cream in both themes, with a cream backing on dark surfaces. Light/dark wordmarks, favicon, Apple icon and PNG/SVG social cards are in `public/`. To regenerate raster exports from the editable vector source, run `node scripts/assets.mjs` (Sharp is supplied by Next.js). Brand colors are centralized in globals.css: navy #1C2241, cream #FAF6EE and gold #E8D2A9. The Oxog geometry and color/motion references come from the existing CobaltDB site.
 
 ## Publish
 

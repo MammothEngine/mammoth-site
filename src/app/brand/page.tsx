@@ -15,22 +15,43 @@ export default function Brand() {
         <span>A distinct character.</span>
       </h1>
       <p>
-        The site’s database mark carries forward the upstream website’s database
-        symbol.
+        The Mammoth identity pairs a faceted mammoth with a tusk shaped into a
+        gear.
         <br />
-        The original geometry and sky-blue palette carry through both themes.
+        Deep navy, warm cream and soft gold come from the supplied brand
+        reference.
       </p>
       <div className="brand-assets">
         <div className="brand-asset">
           <Logo />
           <a href="/mammoth-logo.svg" download>
-            Download the SVG wordmark ↓
+            Download the light-surface wordmark ↓
+          </a>
+          <a href="/mammoth-logo-dark.svg" download>
+            Download the dark-surface wordmark ↓
           </a>
         </div>
         <div className="brand-asset">
           <Logo iconOnly />
           <a href="/favicon.svg" download>
-            Download the SVG icon ↓
+            Download the favicon SVG ↓
+          </a>
+        </div>
+      </div>
+      <div className="brand-reference">
+        <Logo iconOnly />
+        <div>
+          <h2>The Mammoth mark.</h2>
+          <p>
+            A transparent vector trace of the supplied artwork, with its navy
+            facets and cream gear.
+          </p>
+          <a className="text-link" href="/mammoth-mark.svg" download>
+            Download the SVG mark ↓
+          </a>
+          <br />
+          <a className="text-link" href="/mammoth-original.jpeg" download>
+            Download the original reference ↓
           </a>
         </div>
       </div>
@@ -38,12 +59,13 @@ export default function Brand() {
         <strong>Give the mark room.</strong>
         <p>
           Keep its proportions intact and leave at least one half-icon of space
-          around it. Use the dark mark on light surfaces and the light mark on
-          dark surfaces. Keep small marks free of effects.
+          around it. Keep the original navy and cream colors. On dark surfaces,
+          use a cream backing to keep the silhouette visible. Keep small marks
+          free of effects.
         </p>
       </div>
       <p>
-        Primary accent #0369A1 · Light canvas #FAF9F6 · Dark canvas #131218.
+        Navy #1C2241 · Cream #FAF6EE · Gold #E8D2A9.
         <br />
         Typography: Space Grotesk for display, Manrope for body. Font license
         files ship with their packages.

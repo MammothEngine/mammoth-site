@@ -34,7 +34,11 @@ The new site resolves that structural failure mode with two document-owned fixed
 - UWAS and GuardianWAF: live content inspected for product-first hierarchy, distinct section compositions, code walkthroughs and operational detail.
 - DockRouter, NothingDNS, Anubis, CacheStorm and OpenLoadBalancer: web retrieval was attempted but unavailable through the web tool. Their local sibling checkouts are available as design context; none of their product claims or identities are copied into Mammoth.
 
-Mammoth uses an independently composed editorial layout, locally served Space Grotesk and Manrope, warm light/dark surfaces, sky-blue storage artwork, fine rules and mint status accents. Main container reaches 1720 px at large widths; paragraphs retain separate readable measures.
+The user subsequently supplied an authoritative standalone Mammoth logo (`1586067_Image0.jpeg`) and a product infographic (`1599525_Image0.jpeg`). The standalone navy mammoth and cream/gold gear take precedence over the older site's generic database icon and blue palette. A transparent SVG trace preserves the faceted silhouette; the original JPEG is retained as a downloadable source. The infographic is a visual reference, not an instruction to copy its unverified performance, license or compatibility claims.
+
+The SVG was traced from the original JPEG with VTracer 0.6.4, color/stacked/polygon mode, filter_speckle=4, color_precision=6, gradient_step=4 and path_precision=1. Only the outer white background rectangle was removed; the viewBox trims empty margins to `350 95 710 575`. The original download is byte-identical to the supplied file (SHA-256 `396cac337e63ce11dc4624b5a8168b26982e3028a1b6c2f4fe57e5444996af20`). The trace contains vector paths, without an embedded raster image or runtime vectorizer dependency.
+
+Mammoth uses an independently composed editorial layout, locally served Space Grotesk and Manrope, warm cream and deep navy surfaces, navy/gold storage artwork, fine rules and mint status accents. Main container reaches 1720 px at large widths; paragraphs retain separate readable measures.
 
 ## Verification boundaries
 

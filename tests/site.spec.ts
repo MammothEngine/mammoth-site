@@ -495,6 +495,9 @@ test("static assets, metadata, links and the custom 404 are complete", async ({
   for (const path of [
     "/favicon.svg",
     "/mammoth-logo.svg",
+    "/mammoth-logo-dark.svg",
+    "/mammoth-mark.svg",
+    "/mammoth-original.jpeg",
     "/social.png",
     "/apple-touch-icon.png",
     "/sitemap.xml",
