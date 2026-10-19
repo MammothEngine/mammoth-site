@@ -60,6 +60,12 @@ export function setPreference(key: string, value: string) {
 export function useMotion() {
   return useSyncExternalStore(subscribe, motionEnabled, () => false);
 }
+export function ambientMotionEnabled() {
+  return !matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+export function useAmbientMotion() {
+  return useSyncExternalStore(subscribe, ambientMotionEnabled, () => false);
+}
 export function useTheme() {
   return useSyncExternalStore(subscribe, currentTheme, () => "system" as Theme);
 }

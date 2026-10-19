@@ -14,10 +14,12 @@ type Spark = Point & { vx: number; vy: number };
 export function startScene(
   ambient: HTMLCanvasElement,
   interaction: HTMLCanvasElement,
+  ambientEnabled: boolean,
 ) {
   const bg = ambient.getContext("2d");
   const fx = interaction.getContext("2d");
-  if (!bg || !fx) return () => {};
+  if (!bg || !fx)
+    return { stop() {}, setInteractionEnabled(_enabled: boolean) {} };
   const a = bg;
   const f = fx;
   let width = 0,
@@ -27,6 +29,8 @@ export function startScene(
     time = 0;
   let color = "71, 76, 111";
   let particles: Particle[] = [];
+  let interactionEnabled = false;
+  let attached = false;
   let trails: Point[] = [],
     ripples: Point[] = [],
     sparks: Spark[] = [];
@@ -156,24 +160,26 @@ export function startScene(
       p.vy *= 0.95 ** delta;
       p.x += p.vx * delta;
       p.y += p.vy * delta;
-      a.strokeStyle = `rgba(${color},0.28)`;
-      a.lineWidth = 0.8;
-      if (i % 4 === 0) {
-        a.strokeRect(p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
-      } else {
-        a.beginPath();
-        a.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
-        a.stroke();
-      }
-      for (let j = i + 1; j < particles.length; j++) {
-        const q = particles[j],
-          d = Math.hypot(p.x - q.x, p.y - q.y);
-        if (d > 145) continue;
-        a.strokeStyle = `rgba(${color},${0.1 * (1 - d / 145)})`;
-        a.beginPath();
-        a.moveTo(p.x, p.y);
-        a.lineTo(q.x, q.y);
-        a.stroke();
+      if (ambientEnabled) {
+        a.strokeStyle = `rgba(${color},0.28)`;
+        a.lineWidth = 0.8;
+        if (i % 4 === 0) {
+          a.strokeRect(p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
+        } else {
+          a.beginPath();
+          a.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+          a.stroke();
+        }
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j],
+            d = Math.hypot(p.x - q.x, p.y - q.y);
+          if (d > 145) continue;
+          a.strokeStyle = `rgba(${color},${0.1 * (1 - d / 145)})`;
+          a.beginPath();
+          a.moveTo(p.x, p.y);
+          a.lineTo(q.x, q.y);
+          a.stroke();
+        }
       }
       if (pointer.active && distance < 260) {
         const alpha = (1 - distance / 260) * 0.55;
@@ -241,36 +247,71 @@ export function startScene(
       f.fillRect(spark.x, spark.y, fade * 3, fade * 3);
     }
   }
-  function attach() {
-    document.documentElement.dataset.sceneVisibility = "visible";
-    resize();
-    previous = 0;
-    ambient.dataset.state = "running";
-    interaction.dataset.state = "running";
+  function attachInput() {
     window.addEventListener("pointermove", move, { passive: true });
     window.addEventListener("pointerdown", press, { passive: true });
     window.addEventListener("pointerout", leave, { passive: true });
     window.addEventListener("pointerup", touchEnd, { passive: true });
     window.addEventListener("pointercancel", clearEffects, { passive: true });
     window.addEventListener("blur", clearEffects);
-    window.addEventListener("resize", resize, { passive: true });
-    frame = requestAnimationFrame(draw);
   }
-  function detach() {
-    document.documentElement.dataset.sceneVisibility = "hidden";
-    cancelAnimationFrame(frame);
-    frame = 0;
+  function detachInput() {
     window.removeEventListener("pointermove", move);
     window.removeEventListener("pointerdown", press);
     window.removeEventListener("pointerout", leave);
     window.removeEventListener("pointerup", touchEnd);
     window.removeEventListener("pointercancel", clearEffects);
     window.removeEventListener("blur", clearEffects);
-    window.removeEventListener("resize", resize);
     clearEffects();
+    for (const p of particles) {
+      p.vx = 0;
+      p.vy = 0;
+    }
+  }
+  function setInteractionEnabled(enabled: boolean) {
+    if (interactionEnabled === enabled) return;
+    interactionEnabled = enabled;
+    detachInput();
+    interaction.dataset.state = enabled
+      ? attached
+        ? "running"
+        : "paused"
+      : "off";
+    if (!attached) return;
+    if (enabled) {
+      attachInput();
+      if (!frame) {
+        previous = 0;
+        frame = requestAnimationFrame(draw);
+      }
+    } else if (!ambientEnabled) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    }
+  }
+  function attach() {
+    if (attached) return;
+    attached = true;
+    document.documentElement.dataset.sceneVisibility = "visible";
+    resize();
+    previous = 0;
+    ambient.dataset.state = ambientEnabled ? "running" : "off";
+    interaction.dataset.state = interactionEnabled ? "running" : "off";
+    if (interactionEnabled) attachInput();
+    window.addEventListener("resize", resize, { passive: true });
+    if (ambientEnabled || interactionEnabled)
+      frame = requestAnimationFrame(draw);
+  }
+  function detach() {
+    attached = false;
+    document.documentElement.dataset.sceneVisibility = "hidden";
+    cancelAnimationFrame(frame);
+    frame = 0;
+    detachInput();
+    window.removeEventListener("resize", resize);
     a.clearRect(0, 0, width, height);
-    ambient.dataset.state = "paused";
-    interaction.dataset.state = "paused";
+    ambient.dataset.state = ambientEnabled ? "paused" : "off";
+    interaction.dataset.state = interactionEnabled ? "paused" : "off";
   }
   function visibility() {
     if (document.hidden) detach();
@@ -285,12 +326,13 @@ export function startScene(
   system.addEventListener("change", updateColor);
   document.addEventListener("visibilitychange", visibility);
   if (!document.hidden) attach();
-  return () => {
+  function stop() {
     detach();
     observer.disconnect();
     system.removeEventListener("change", updateColor);
     document.removeEventListener("visibilitychange", visibility);
     ambient.dataset.state = "off";
     interaction.dataset.state = "off";
-  };
+  }
+  return { stop, setInteractionEnabled };
 }

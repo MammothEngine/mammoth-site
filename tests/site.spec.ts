@@ -76,7 +76,7 @@ async function start(page: Page) {
   );
 }
 
-test("hero tells the document story in order and cancels its animations when disabled or offscreen", async ({
+test("hero tells the document story, survives the mouse toggle and stops only offscreen", async ({
   page,
 }) => {
   await start(page);
@@ -117,17 +117,17 @@ test("hero tells the document story in order and cancels its animations when dis
   expect(log.response).toBe(0);
   expect((await stageAt(5200)).disk).toBeGreaterThan(0.4);
   expect((await stageAt(6200)).response).toBeGreaterThan(0.4);
-  await page.getByRole("button", { name: "Animasyonları kapat" }).click();
+  await page.getByRole("button", { name: "Fare efektlerini kapat" }).click();
   await expect
     .poll(() => hero.evaluate((e) => e.getAnimations({ subtree: true }).length))
-    .toBe(0);
+    .toBeGreaterThan(0);
   expect(
-    await page
-      .locator(".hero-packet-request")
-      .evaluate((e) => getComputedStyle(e).opacity),
-  ).toBe("0");
+    await hero.evaluate((e) =>
+      e.getAnimations({ subtree: true }).every((a) => a.currentTime === 6200),
+    ),
+  ).toBe(true);
   await expect(hero).toContainText("MAMMOTH ENGINE");
-  await page.getByRole("button", { name: "Animasyonları aç" }).click();
+  await page.getByRole("button", { name: "Fare efektlerini aç" }).click();
   await expect
     .poll(() => hero.evaluate((e) => e.getAnimations({ subtree: true }).length))
     .toBeGreaterThan(0);
@@ -142,15 +142,18 @@ test("hero tells the document story in order and cancels its animations when dis
     .toBeGreaterThan(0);
 });
 
-test("motion preference clears effects, removes input listeners and cancels RAF; keyboard restarts it", async ({
+test("mouse preference clears only pointer effects and listeners while ambient and hero keep running", async ({
   page,
 }) => {
   await probe(page);
   await start(page);
+  const heroAnimations = await page
+    .locator(".engine-art")
+    .evaluateHandle((e) => e.getAnimations({ subtree: true }));
   await page.mouse.move(350, 350);
   await page.mouse.click(350, 350);
   await expect.poll(() => canvasAlpha(page, 350, 350, 70)).toBeGreaterThan(0);
-  await page.getByRole("button", { name: "Animasyonları kapat" }).click();
+  await page.getByRole("button", { name: "Fare efektlerini kapat" }).click();
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
     "off",
@@ -165,19 +168,43 @@ test("motion preference clears effects, removes input listeners and cancels RAF;
       ).motionProbe;
       return { listeners: p.listeners(), frames: p.frames() };
     });
-  await expect.poll(stats).toEqual({ listeners: 0, frames: 0 });
+  await expect.poll(stats).toEqual({ listeners: 0, frames: 1 });
+  await expect(page.locator(".scene-ambient")).toHaveAttribute(
+    "data-state",
+    "running",
+  );
+  expect(
+    await heroAnimations.evaluate(
+      (animations) =>
+        animations.length > 0 &&
+        animations.every((a) => a.playState === "running"),
+    ),
+  ).toBe(true);
+  await page.mouse.move(450, 350);
+  await page.mouse.click(450, 350);
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
+  );
+  expect(await canvasAlpha(page, 450, 350, 70)).toBe(0);
   await page.reload();
   await expect(
-    page.getByRole("button", { name: "Animasyonları aç" }),
+    page.getByRole("button", { name: "Fare efektlerini aç" }),
   ).toHaveAttribute("aria-pressed", "false");
-  await expect.poll(stats).toEqual({ listeners: 0, frames: 0 });
-  await page.getByRole("button", { name: "Animasyonları aç" }).focus();
+  await expect.poll(stats).toEqual({ listeners: 0, frames: 1 });
+  await expect(page.locator(".scene-ambient")).toHaveAttribute(
+    "data-state",
+    "running",
+  );
+  await page.getByRole("button", { name: "Fare efektlerini aç" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
     "running",
   );
   expect((await stats()).listeners).toBe(1);
+  await page.mouse.move(450, 350);
+  await expect.poll(() => canvasAlpha(page, 450, 350)).toBeGreaterThan(0);
   expect(
     await page.evaluate(() => localStorage.getItem("mammoth-motion")),
   ).toBe("on");
@@ -307,7 +334,7 @@ test("reduced motion is the default until an explicit preference; system changes
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(
-    page.getByRole("button", { name: "Animasyonları aç" }),
+    page.getByRole("button", { name: "Fare efektlerini aç" }),
   ).toHaveAttribute("aria-pressed", "false");
   expect(
     await page.evaluate(() =>
@@ -316,6 +343,10 @@ test("reduced motion is the default until an explicit preference; system changes
       ).motionProbe.listeners(),
     ),
   ).toBe(0);
+  await expect(page.locator(".scene-ambient")).toHaveAttribute(
+    "data-state",
+    "off",
+  );
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
@@ -326,7 +357,7 @@ test("reduced motion is the default until an explicit preference; system changes
     "data-state",
     "off",
   );
-  await page.getByRole("button", { name: "Animasyonları aç" }).click();
+  await page.getByRole("button", { name: "Fare efektlerini aç" }).click();
   await page.reload();
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
@@ -354,7 +385,7 @@ test("storage failure preserves working controls within the session", async ({
     };
   });
   await start(page);
-  await page.getByRole("button", { name: "Animasyonları kapat" }).click();
+  await page.getByRole("button", { name: "Fare efektlerini kapat" }).click();
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
     "off",
@@ -460,18 +491,18 @@ test("mobile taps allow scrolling, menus and the motion toggle", async ({
     .getByRole("link", { name: "Why Mammoth" })
     .tap();
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
-  await page.getByRole("button", { name: "Animasyonları kapat" }).tap();
+  await page.getByRole("button", { name: "Fare efektlerini kapat" }).tap();
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
     "off",
   );
-  await page.getByRole("button", { name: "Animasyonları aç" }).tap();
+  await page.getByRole("button", { name: "Fare efektlerini aç" }).tap();
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
     "running",
   );
   const bounds = await page
-    .getByRole("button", { name: "Animasyonları kapat" })
+    .getByRole("button", { name: "Fare efektlerini kapat" })
     .boundingBox();
   if (!bounds) throw new Error("Missing motion button");
   expect(bounds.height).toBeGreaterThanOrEqual(44);
@@ -650,7 +681,7 @@ test("motion preference synchronizes across tabs without leaking listeners", asy
   await start(page);
   const other = await context.newPage();
   await start(other);
-  await other.getByRole("button", { name: "Animasyonları kapat" }).click();
+  await other.getByRole("button", { name: "Fare efektlerini kapat" }).click();
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
     "off",
@@ -662,7 +693,7 @@ test("motion preference synchronizes across tabs without leaking listeners", asy
       ).motionProbe.listeners(),
     ),
   ).toBe(0);
-  await other.getByRole("button", { name: "Animasyonları aç" }).click();
+  await other.getByRole("button", { name: "Fare efektlerini aç" }).click();
   await expect(page.locator(".scene-interaction")).toHaveAttribute(
     "data-state",
     "running",

@@ -1521,13 +1521,13 @@ th {
 
 /* Motion is scoped to decoration. Menus, tabs and functional feedback are independent. */
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-motion="on"][data-scene-visibility="visible"]
+  :root[data-scene-visibility="visible"]
     .architecture-diagram[data-visible="true"]
     .flow-connector
     > i::after {
     animation: flow-down 2.5s ease-in-out infinite;
   }
-  :root[data-motion="on"][data-scene-visibility="visible"]
+  :root[data-scene-visibility="visible"]
     .studio[data-visible="true"]
     .oxog-mark
     path {

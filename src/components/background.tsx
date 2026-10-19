@@ -1,18 +1,28 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
-import { useMotion } from "@/lib/preferences";
+import { useEffect, useEffectEvent, useRef } from "react";
+import { useAmbientMotion, useMotion } from "@/lib/preferences";
 import { startScene } from "@/lib/scene";
 
 export function Background() {
   const pathname = usePathname();
   const enabled = useMotion();
+  const ambientEnabled = useAmbientMotion();
+  const scene = useRef<ReturnType<typeof startScene> | null>(null);
   const ambient = useRef<HTMLCanvasElement>(null);
   const interaction = useRef<HTMLCanvasElement>(null);
+  const syncInteraction = useEffectEvent(() => {
+    scene.current?.setInteractionEnabled(enabled);
+  });
   useEffect(() => {
-    if (!enabled || !pathname || !ambient.current || !interaction.current)
-      return;
-    const stop = startScene(ambient.current, interaction.current);
+    if (!pathname || !ambient.current || !interaction.current) return;
+    const current = startScene(
+      ambient.current,
+      interaction.current,
+      ambientEnabled,
+    );
+    scene.current = current;
+    syncInteraction();
     const decorations = document.querySelectorAll<HTMLElement>(
       ".engine-art, .architecture-diagram, .studio",
     );
@@ -24,11 +34,15 @@ export function Background() {
     });
     for (const decoration of decorations) observer.observe(decoration);
     return () => {
-      stop();
+      current.stop();
+      scene.current = null;
       observer.disconnect();
       for (const decoration of decorations) delete decoration.dataset.visible;
     };
-  }, [enabled, pathname]);
+  }, [ambientEnabled, pathname]);
+  useEffect(() => {
+    scene.current?.setInteractionEnabled(enabled);
+  }, [enabled]);
   return (
     <>
       <div className="ambient-wash" aria-hidden="true" />

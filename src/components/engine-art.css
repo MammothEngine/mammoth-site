@@ -108,8 +108,7 @@
 
 /* Removing this gate cancels the animations and restores the complete static diagram. */
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-motion="on"][data-scene-visibility="visible"]
-    .engine-art[data-visible="true"] {
+  :root[data-scene-visibility="visible"] .engine-art[data-visible="true"] {
     .hero-packet {
       animation: hero-packet-travel var(--hero-cycle)
         cubic-bezier(0.22, 0.61, 0.36, 1) var(--hero-phase) infinite both;
@@ -149,7 +148,7 @@
   }
 }
 @media (prefers-reduced-motion: no-preference) and (pointer: fine) {
-  :root[data-motion="on"][data-scene-visibility="visible"]
+  :root[data-scene-visibility="visible"]
     .engine-art[data-visible="true"]
     .hero-core-orbit {
     animation: hero-core-orbit var(--hero-cycle) ease-in-out var(--hero-phase)

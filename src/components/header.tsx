@@ -38,7 +38,9 @@ export function Header() {
   const id = useId();
   const Choice = choices.find((c) => c.value === theme) ?? choices[2];
   const MotionIcon = enabled ? Mouse : MouseOff;
-  const motionLabel = enabled ? "Animasyonları kapat" : "Animasyonları aç";
+  const motionLabel = enabled
+    ? "Fare efektlerini kapat"
+    : "Fare efektlerini aç";
   useEffect(() => {
     if (!open) return;
     root.current?.querySelector<HTMLInputElement>("input:checked")?.focus();
