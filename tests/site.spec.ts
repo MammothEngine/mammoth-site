@@ -586,6 +586,7 @@ test("static assets, metadata, links and the custom 404 are complete", async ({
     "/mammoth-logo-dark.svg",
     "/mammoth-mark.svg",
     "/mammoth-original.jpeg",
+    "/og.png",
     "/social.png",
     "/apple-touch-icon.png",
     "/sitemap.xml",
@@ -600,6 +601,21 @@ test("static assets, metadata, links and the custom 404 are complete", async ({
   expect(await page.locator('link[rel="canonical"]').getAttribute("href")).toBe(
     "https://mammothengine.com/",
   );
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    "https://mammothengine.com/og.png",
+  );
+  await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+    "content",
+    "https://mammothengine.com/og.png",
+  );
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+    "content",
+    "1200",
+  );
+  await expect(
+    page.locator('meta[property="og:image:height"]'),
+  ).toHaveAttribute("content", "630");
   expect((await page.goto("/there-is-no-such-page/"))?.status()).toBe(404);
   await expect(page.locator("h1")).toHaveText("Off the trail.");
 });

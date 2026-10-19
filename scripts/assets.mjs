@@ -19,4 +19,8 @@ await sharp(Buffer.from(icon))
   .resize(180, 180)
   .png()
   .toFile("public/apple-touch-icon.png");
-await sharp(Buffer.from(social)).png().toFile("public/social.png");
+const socialPng = await sharp(Buffer.from(social)).png().toBuffer();
+await Promise.all([
+  writeFile("public/og.png", socialPng),
+  writeFile("public/social.png", socialPng),
+]);

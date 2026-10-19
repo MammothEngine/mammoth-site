@@ -24,14 +24,15 @@ export const metadata: Metadata = {
       "The MongoDB-compatible document database. Built in Go. Yours to build on.",
     images: [
       {
-        url: "/social.png",
+        url: "/og.png",
         width: 1200,
         height: 630,
+        type: "image/png",
         alt: "Mammoth — Big ideas. Solid ground.",
       },
     ],
   },
-  twitter: { card: "summary_large_image", images: ["/social.png"] },
+  twitter: { card: "summary_large_image", images: ["/og.png"] },
   icons: { icon: "/favicon.svg", apple: "/apple-touch-icon.png" },
 };
 const bootstrap = `(function(){try{var t=localStorage.getItem('mammoth-theme');document.documentElement.dataset.theme=t==='dark'||t==='light'?t:'system';var m=localStorage.getItem('mammoth-motion');document.documentElement.dataset.motion=m==='on'||(m!=='off'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)?'on':'off'}catch(e){document.documentElement.dataset.theme='system';document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on'}})()`;
