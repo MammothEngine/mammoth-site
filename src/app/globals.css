@@ -569,14 +569,39 @@ h1 > span {
   height: auto;
   margin-block: 10px 0;
 }
-.svg-label {
-  font: 9px var(--mono);
-  letter-spacing: 0.07em;
+.art-node-label {
+  font: 500 12px var(--mono);
+  letter-spacing: 0.08em;
+  fill: var(--accent);
+}
+.art-client-title {
+  font: 500 18px var(--body);
+  fill: var(--text);
+}
+.art-example-code {
+  font: 13px var(--mono);
   fill: var(--muted);
 }
-.svg-code {
+.art-annotation {
+  font: 13px var(--body);
+  fill: var(--muted);
+}
+.art-document-title {
   font: 14px var(--mono);
   fill: var(--accent);
+}
+.art-response-code {
+  font: 17px var(--mono);
+  fill: var(--accent);
+}
+.art-core-title {
+  font: 600 18px var(--display);
+  letter-spacing: 0.02em;
+  fill: #1c2241;
+}
+.art-storage-title {
+  font: 500 20px var(--display);
+  fill: var(--text);
 }
 .engine-art figcaption {
   display: flex;
@@ -588,8 +613,39 @@ h1 > span {
   border-top: 1px solid var(--line);
   padding-top: 17px;
 }
-.engine-art figcaption .accent {
-  margin-left: 10px;
+.engine-art .art-legend {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  letter-spacing: 0;
+}
+.art-legend strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 16px var(--display);
+  color: var(--text);
+}
+.art-legend i {
+  font: 9px var(--mono);
+  color: var(--brand-gold-ink);
+}
+.art-legend small {
+  display: block;
+  margin-top: 5px;
+  padding-left: 20px;
+  font: 11px / 1.5 var(--body);
+  color: var(--muted);
+}
+@media (max-width: 520px) {
+  .art-legend strong {
+    font-size: 14px;
+    gap: 6px;
+  }
+  .art-legend small {
+    font-size: 10px;
+    padding-left: 0;
+  }
 }
 .foundation-strip {
   display: flex;
