@@ -1522,21 +1522,6 @@ th {
 /* Motion is scoped to decoration. Menus, tabs and functional feedback are independent. */
 @media (prefers-reduced-motion: no-preference) {
   :root[data-motion="on"][data-scene-visibility="visible"]
-    .engine-art[data-visible="true"]
-    .document-float {
-    animation: float-document 7s ease-in-out infinite;
-  }
-  :root[data-motion="on"][data-scene-visibility="visible"]
-    .engine-art[data-visible="true"]
-    .document-float.second {
-    animation-delay: -3s;
-  }
-  :root[data-motion="on"][data-scene-visibility="visible"]
-    .engine-art[data-visible="true"]
-    .art-flow {
-    animation: flow 10s linear infinite;
-  }
-  :root[data-motion="on"][data-scene-visibility="visible"]
     .architecture-diagram[data-visible="true"]
     .flow-connector
     > i::after {
@@ -1557,20 +1542,6 @@ th {
   }
   .oxog-mark path:nth-child(4) {
     --draw-delay: 0.45s;
-  }
-}
-@keyframes float-document {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-11px);
-  }
-}
-@keyframes flow {
-  to {
-    stroke-dashoffset: -120;
   }
 }
 @keyframes flow-down {

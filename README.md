@@ -47,6 +47,8 @@ The mouse control next to the theme picker stores `mammoth-motion` (`on`/`off`) 
 
 Disabling motion clears both canvases and drops the scene's RAF, pointer, blur, resize, visibility and theme observers/listeners. Preference subscribers remain so the control can respond to user and OS changes. Hidden tabs cancel the scene loop and pointer listeners; resuming reinitializes its time base. IntersectionObserver gates hero, architecture and Oxog animation; offscreen decorative SVGs have no animation. Motion changes do not alter the interactive tabs, navigation, disclosure controls or copy feedback.
 
+The hero uses a shared eight-second CSS timeline to illustrate document input, engine processing, storage and acknowledgement. Moving packets, a subtle logo pulse, the core outline and staggered storage highlights share that timeline without an additional JavaScript animation loop. All hero effects stop when hidden, offscreen, disabled or under reduced motion; the complete static diagram remains readable. Coarse pointers omit the decorative orbit. These are illustrative signals, not live database status.
+
 ## Content and identity
 
 Guides link to the inspected upstream snapshot (`6b186803b0a17b4ef03914dc6cbd3602d6ede66c`). See [the research notes](docs/research.md) for evidence and conflicting upstream claims. This site does not claim stable production readiness or reproduce benchmarks without measurement context. Database examples are illustrative, not executed in the visitor’s browser.

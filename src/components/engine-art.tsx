@@ -1,3 +1,5 @@
+import "./engine-art.css";
+
 export function EngineArt() {
   return (
     <figure className="engine-art">
@@ -23,6 +25,11 @@ export function EngineArt() {
           illustration, not a running database.
         </desc>
         <defs>
+          <radialGradient id="hero-core-halo">
+            <stop stopColor="var(--brand-gold)" stopOpacity=".48" />
+            <stop offset=".6" stopColor="var(--brand-gold)" stopOpacity=".18" />
+            <stop offset="1" stopColor="var(--brand-gold)" stopOpacity="0" />
+          </radialGradient>
           <marker
             id="engine-arrow"
             viewBox="0 0 10 10"
@@ -71,6 +78,21 @@ export function EngineArt() {
           strokeWidth="18"
           opacity=".25"
         />
+        <g className="hero-core-ambience" transform="translate(320 282)">
+          <circle
+            className="hero-core-glow"
+            r="174"
+            fill="url(#hero-core-halo)"
+          />
+          <g
+            className="hero-core-orbit"
+            fill="none"
+            stroke="var(--brand-gold-ink)"
+          >
+            <circle r="133" strokeWidth="1.6" strokeDasharray="54 38 9 38" />
+            <circle r="145" strokeWidth="1" strokeDasharray="2 23" />
+          </g>
+        </g>
 
         <g className="art-client">
           <text x="320" y="35" textAnchor="middle" className="art-node-label">
@@ -124,10 +146,10 @@ export function EngineArt() {
           strokeWidth="2"
           strokeDasharray="3 9"
         >
-          <path d="M320 134v42" />
-          <path d="M166 285h27" />
-          <path d="M447 285h27" />
-          <path d="M320 386v49" />
+          <path className="hero-wire hero-wire-request" d="M320 134v42" />
+          <path className="hero-wire hero-wire-document" d="M166 285h27" />
+          <path className="hero-wire hero-wire-response" d="M447 285h27" />
+          <path className="hero-wire hero-wire-storage" d="M320 386v49" />
         </g>
         <text x="335" y="163" className="art-annotation">
           MongoDB wire protocol
@@ -145,6 +167,17 @@ export function EngineArt() {
             rx="8"
             fill="var(--surface)"
             stroke="var(--art-line)"
+          />
+          <rect
+            className="hero-node-highlight hero-document-highlight"
+            x="22"
+            y="237"
+            width="144"
+            height="102"
+            rx="8"
+            fill="none"
+            stroke="var(--brand-gold-ink)"
+            strokeWidth="2"
           />
           <g className="document-float">
             <path
@@ -182,18 +215,28 @@ export function EngineArt() {
             fill="var(--brand-paper)"
             stroke="var(--brand-gold)"
           />
-          <image
-            href="/mammoth-mark.svg"
-            x="242"
-            y="206"
-            width="156"
-            height="126"
-          />
+          <g className="hero-mark">
+            <image
+              href="/mammoth-mark.svg"
+              x="242"
+              y="206"
+              width="156"
+              height="126"
+            />
+          </g>
           <path d="M226 343h188" stroke="#ded4c2" />
           <text x="320" y="365" textAnchor="middle" className="art-core-title">
             MAMMOTH ENGINE
           </text>
           <circle cx="417" cy="206" r="3" fill="var(--mint)" />
+          <path
+            className="hero-core-outline"
+            d="M218 179h204l24 24v159l-24 24H218l-24-24V203Z"
+            pathLength="1"
+            fill="none"
+            stroke="var(--brand-gold-ink)"
+            strokeWidth="2.5"
+          />
         </g>
 
         <g className="art-response">
@@ -210,7 +253,20 @@ export function EngineArt() {
             stroke="var(--art-line)"
           />
           <circle cx="546" cy="265" r="13" fill="var(--accent-soft)" />
+          <rect
+            className="hero-node-highlight hero-response-highlight"
+            x="474"
+            y="237"
+            width="144"
+            height="102"
+            rx="8"
+            fill="none"
+            stroke="var(--mint)"
+            strokeWidth="2"
+          />
           <path
+            className="hero-result-check"
+            pathLength="1"
             d="m540 265 4 4 8-9"
             fill="none"
             stroke="var(--mint)"
@@ -244,6 +300,37 @@ export function EngineArt() {
             fill="var(--surface)"
             stroke="var(--art-line)"
           />
+          <g
+            className="hero-storage-highlights"
+            fill="var(--accent-soft)"
+            stroke="var(--brand-gold-ink)"
+            strokeWidth="1.3"
+          >
+            <rect
+              className="hero-node-highlight hero-store-wal"
+              x="124"
+              y="453"
+              width="120"
+              height="68"
+              rx="5"
+            />
+            <rect
+              className="hero-node-highlight hero-store-memory"
+              x="260"
+              y="453"
+              width="120"
+              height="68"
+              rx="5"
+            />
+            <rect
+              className="hero-node-highlight hero-store-disk"
+              x="396"
+              y="453"
+              width="120"
+              height="68"
+              rx="5"
+            />
+          </g>
           <path d="M252 460v54m136-54v54" stroke="var(--line)" />
           <text
             x="184"
@@ -285,21 +372,80 @@ export function EngineArt() {
             strokeWidth="1.3"
           />
         </g>
+        <g className="hero-packets">
+          <g transform="translate(320 134)">
+            <g className="hero-packet hero-packet-request">
+              <rect
+                x="-7"
+                y="-5"
+                width="14"
+                height="10"
+                rx="2"
+                fill="var(--brand-gold)"
+                stroke="var(--brand-gold-ink)"
+              />
+              <path d="M-3-1h6m-6 3h4" stroke="#333957" strokeWidth="1" />
+            </g>
+          </g>
+          <g transform="translate(166 285)">
+            <g className="hero-packet hero-packet-document">
+              <rect
+                x="-6"
+                y="-8"
+                width="12"
+                height="16"
+                rx="2"
+                fill="var(--brand-paper)"
+                stroke="var(--brand-gold-ink)"
+              />
+              <path
+                d="M-3-3h6m-6 3h6m-6 3h4"
+                stroke="var(--brand-gold-ink)"
+                strokeWidth="1"
+              />
+            </g>
+          </g>
+          <g transform="translate(320 386)">
+            <g className="hero-packet hero-packet-storage">
+              <rect
+                x="-6"
+                y="-6"
+                width="12"
+                height="12"
+                rx="2"
+                fill="var(--brand-gold)"
+                stroke="var(--brand-gold-ink)"
+              />
+              <path d="M-3 0h6m-3-3v6" stroke="#333957" strokeWidth="1" />
+            </g>
+          </g>
+          <g transform="translate(447 285)">
+            <g className="hero-packet hero-packet-response">
+              <circle r="5" fill="var(--mint)" />
+              <circle
+                r="8"
+                fill="none"
+                stroke="var(--mint)"
+                strokeOpacity=".4"
+              />
+            </g>
+          </g>
+        </g>
       </svg>
       <figcaption className="art-legend">
-        <span>
+        <span className="hero-legend-connect">
           <strong>
             <i>01</i> Connect
           </strong>
           <small>Your MongoDB client</small>
         </span>
-        <span>
+        <span className="hero-legend-process">
           <strong>
             <i>02</i> Process
           </strong>
           <small>The Mammoth engine</small>
         </span>
-        <span>
+        <span className="hero-legend-persist">
           <strong>
             <i>03</i> Persist
           </strong>

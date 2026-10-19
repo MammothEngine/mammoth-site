@@ -76,6 +76,72 @@ async function start(page: Page) {
   );
 }
 
+test("hero tells the document story in order and cancels its animations when disabled or offscreen", async ({
+  page,
+}) => {
+  await start(page);
+  const hero = page.locator(".engine-art");
+  await expect(hero).toHaveAttribute("data-visible", "true");
+  await expect
+    .poll(() => hero.evaluate((e) => e.getAnimations({ subtree: true }).length))
+    .toBeGreaterThan(0);
+  const stageAt = (time: number) =>
+    hero.evaluate((element, at) => {
+      for (const animation of element.getAnimations({ subtree: true })) {
+        animation.pause();
+        animation.currentTime = at;
+      }
+      const opacity = (selector: string) =>
+        Number(
+          getComputedStyle(element.querySelector(selector) as Element).opacity,
+        );
+      return {
+        input: opacity(".hero-packet-request"),
+        core: opacity(".hero-core-glow"),
+        wal: opacity(".hero-store-wal"),
+        disk: opacity(".hero-store-disk"),
+        response: opacity(".hero-response-highlight"),
+      };
+    }, time);
+  const input = await stageAt(800);
+  expect(input.input).toBeGreaterThan(0.8);
+  expect(input.core).toBe(0);
+  expect(input.response).toBe(0);
+  const processing = await stageAt(2200);
+  expect(processing.input).toBe(0);
+  expect(processing.core).toBeGreaterThan(0.1);
+  expect(processing.wal).toBe(0);
+  const log = await stageAt(4200);
+  expect(log.wal).toBeGreaterThan(0.5);
+  expect(log.disk).toBe(0);
+  expect(log.response).toBe(0);
+  expect((await stageAt(5200)).disk).toBeGreaterThan(0.4);
+  expect((await stageAt(6200)).response).toBeGreaterThan(0.4);
+  await page.getByRole("button", { name: "Animasyonları kapat" }).click();
+  await expect
+    .poll(() => hero.evaluate((e) => e.getAnimations({ subtree: true }).length))
+    .toBe(0);
+  expect(
+    await page
+      .locator(".hero-packet-request")
+      .evaluate((e) => getComputedStyle(e).opacity),
+  ).toBe("0");
+  await expect(hero).toContainText("MAMMOTH ENGINE");
+  await page.getByRole("button", { name: "Animasyonları aç" }).click();
+  await expect
+    .poll(() => hero.evaluate((e) => e.getAnimations({ subtree: true }).length))
+    .toBeGreaterThan(0);
+  await page.locator("#architecture").scrollIntoViewIfNeeded();
+  await expect(hero).toHaveAttribute("data-visible", "false");
+  await expect
+    .poll(() => hero.evaluate((e) => e.getAnimations({ subtree: true }).length))
+    .toBe(0);
+  await hero.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => hero.evaluate((e) => e.getAnimations({ subtree: true }).length))
+    .toBeGreaterThan(0);
+});
+
 test("motion preference clears effects, removes input listeners and cancels RAF; keyboard restarts it", async ({
   page,
 }) => {
@@ -203,6 +269,11 @@ test("hidden tabs suspend the scene and return without duplicate listeners", asy
     "paused",
   );
   expect(
+    await page
+      .locator(".engine-art")
+      .evaluate((e) => e.getAnimations({ subtree: true }).length),
+  ).toBe(0);
+  expect(
     await page.evaluate(() =>
       (
         window as unknown as { motionProbe: { listeners: () => number } }
@@ -267,6 +338,11 @@ test("reduced motion is the default until an explicit preference; system changes
       .first()
       .evaluate((e) => getComputedStyle(e).animationName),
   ).toBe("none");
+  expect(
+    await page
+      .locator(".engine-art")
+      .evaluate((e) => e.getAnimations({ subtree: true }).length),
+  ).toBe(0);
 });
 
 test("storage failure preserves working controls within the session", async ({
@@ -366,6 +442,18 @@ test("mobile taps allow scrolling, menus and the motion toggle", async ({
   });
   const page = await context.newPage();
   await start(page);
+  await expect
+    .poll(() =>
+      page
+        .locator(".hero-packet-request")
+        .evaluate((e) => e.getAnimations().length),
+    )
+    .toBe(1);
+  expect(
+    await page
+      .locator(".hero-core-orbit")
+      .evaluate((e) => e.getAnimations().length),
+  ).toBe(0);
   await page.getByRole("button", { name: "Open navigation" }).tap();
   await page
     .getByRole("navigation", { name: "Mobile navigation" })
